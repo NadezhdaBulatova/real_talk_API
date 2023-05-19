@@ -3,8 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#custom folders and files 
+tmp
+
 # C extensions
 *.so
+
+node_modules
 
 # Distribution / packaging
 .Python

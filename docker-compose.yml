@@ -1,14 +1,49 @@
 version: "3.9"
 
 services:
-  app:
+  backend:
     build:
-      context: .
+      context: ./backend
       args:
         - DEV=true
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - ./backend/app:/app
     command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+      sh -c "python manage.py check_db_status &&
+            python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASSWORD=devpassword
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - DEV=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:15.3-alpine
+    volumes:
+      - dev-db-data:/var/postgresql/data
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=devpassword
+
+volumes:
+  dev-db-data:

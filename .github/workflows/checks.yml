@@ -15,6 +15,6 @@ jobs:
       - name: Access the code
         uses: actions/checkout@v2
       - name: Test
-        run: docker-compose run --rm app sh -c "python manage.py test"
+        run: docker-compose run --rm app sh -c "python manage.py check_db_status && python manage.py test"
       - name: Lint
         run: docker-compose run --rm app sh -c "flake8"
