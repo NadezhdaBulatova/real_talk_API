@@ -22,19 +22,19 @@ services:
     depends_on:
       - db
 
-  frontend:
-    build:
-      context: ./frontend
-      args:
-        - DEV=true
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-    stdin_open: true
-    tty: true
-    depends_on:
-      - backend
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     args:
+  #       - DEV=true
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app
+  #   stdin_open: true
+  #   tty: true
+  #   depends_on:
+  #     - backend
 
   db:
     image: postgres:15.3-alpine
